@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "changie-ai-backend"
+version = "0.1.0"
+description = "AI backend for ChangieAI"
+authors = ["Matt <matt@changie-ai.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+fastapi = "^0.105.0"
+uvicorn = "^0.23.2"
+imageio-ffmpeg = "^0.6.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
+black = "^24.10.0"
+
+[build-system]
+requires = ["poetry-core>=1.6.0"]
+build-backend = "poetry.core.masonry.api"
+
