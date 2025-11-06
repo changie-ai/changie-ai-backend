@@ -1,44 +1,42 @@
 from fastapi import FastAPI, UploadFile, File
-from pathlib import Path
 import shutil
 import subprocess
+import os
 
 app = FastAPI()
 
-UPLOAD_DIR = Path("uploads")
-PROCESSED_DIR = Path("processed")
-UPLOAD_DIR.mkdir(exist_ok=True)
-PROCESSED_DIR.mkdir(exist_ok=True)
+UPLOAD_FOLDER = "uploads"
+PROCESSED_FOLDER = "processed"
 
-@app.get("/ping")
-def ping():
-    return {"message": "pong"}
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
 @app.post("/upload")
 async def upload_audio(file: UploadFile = File(...), prompt: str = ""):
-    # Save uploaded file
-    file_path = UPLOAD_DIR / file.filename
-    with open(file_path, "wb") as f:
+    # Save the uploaded file
+    input_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    with open(input_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
-    output_file = PROCESSED_DIR / f"processed_{file.filename}"
+    # Determine output path
+    output_path = os.path.join(PROCESSED_FOLDER, f"processed_{file.filename}")
 
-    # Apply delay if requested
-    if "add delay" in prompt.lower():
-        subprocess.run([
+    # Simple FFmpeg delay effect (echo)
+    if "delay" in prompt.lower():
+        # Add 0.5s echo delay
+        cmd = [
             "ffmpeg",
             "-y",
-            "-i", str(file_path),
-            "-filter_complex", "adelay=500|500",
-            str(output_file)
-        ])
-    else:
-        # Copy original if no effect
-        shutil.copy(file_path, output_file)
+            "-i", input_path,
+            "-filter_complex", "aecho=0.8:0.9:500|500:0.3|0.25",
+            output_path
+        ]
+        subprocess.run(cmd, check=True)
 
+    # Return info
     return {
-        "original_filename": file.filename,
-        "processed_filename": output_file.name,
+        "filename": file.filename,
         "prompt": prompt,
-        "message": "Audio processed successfully!"
+        "message": f"File '{file.filename}' uploaded successfully!",
+        "processed_file": output_path
     }
