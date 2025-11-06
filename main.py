@@ -8,14 +8,6 @@ app = FastAPI()
 def ping():
     return {"message": "pong"}
 
-# Test ffmpeg and ffprobe versions
-@app.get("/test_ffmpeg")
-def test_ffmpeg():
-    return {
-        "ffmpeg_version": ffmpeg.get_ffmpeg_version(),
-        "ffprobe_version": ffmpeg.get_ffprobe_version()
-    }
-
 # Upload endpoint for audio files
 @app.post("/upload")
 async def upload_audio(file: UploadFile = File(...), prompt: str = ""):
@@ -24,4 +16,18 @@ async def upload_audio(file: UploadFile = File(...), prompt: str = ""):
         "filename": file.filename,
         "prompt": prompt,
         "message": f"File '{file.filename}' uploaded successfully!"
+    }
+
+# Optional: Test ffmpeg/ffprobe safely
+@app.get("/test_ffmpeg")
+def test_ffmpeg():
+    try:
+        ff_version = ffmpeg.get_ffmpeg_version()
+        fp_version = ffmpeg.get_ffprobe_version()
+    except Exception:
+        ff_version = "ffmpeg not installed"
+        fp_version = "ffprobe not installed"
+    return {
+        "ffmpeg_version": ff_version,
+        "ffprobe_version": fp_version
     }
