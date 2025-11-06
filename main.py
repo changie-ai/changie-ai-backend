@@ -1,33 +1,44 @@
 from fastapi import FastAPI, UploadFile, File
-import imageio_ffmpeg as ffmpeg
+from pathlib import Path
+import shutil
+import subprocess
 
 app = FastAPI()
 
-# Simple ping endpoint to check if the server is alive
+UPLOAD_DIR = Path("uploads")
+PROCESSED_DIR = Path("processed")
+UPLOAD_DIR.mkdir(exist_ok=True)
+PROCESSED_DIR.mkdir(exist_ok=True)
+
 @app.get("/ping")
 def ping():
     return {"message": "pong"}
 
-# Upload endpoint for audio files
 @app.post("/upload")
 async def upload_audio(file: UploadFile = File(...), prompt: str = ""):
-    # Currently just returns filename and prompt
-    return {
-        "filename": file.filename,
-        "prompt": prompt,
-        "message": f"File '{file.filename}' uploaded successfully!"
-    }
+    # Save uploaded file
+    file_path = UPLOAD_DIR / file.filename
+    with open(file_path, "wb") as f:
+        shutil.copyfileobj(file.file, f)
 
-# Optional: Test ffmpeg/ffprobe safely
-@app.get("/test_ffmpeg")
-def test_ffmpeg():
-    try:
-        ff_version = ffmpeg.get_ffmpeg_version()
-        fp_version = ffmpeg.get_ffprobe_version()
-    except Exception:
-        ff_version = "ffmpeg not installed"
-        fp_version = "ffprobe not installed"
+    output_file = PROCESSED_DIR / f"processed_{file.filename}"
+
+    # Apply delay if requested
+    if "add delay" in prompt.lower():
+        subprocess.run([
+            "ffmpeg",
+            "-y",
+            "-i", str(file_path),
+            "-filter_complex", "adelay=500|500",
+            str(output_file)
+        ])
+    else:
+        # Copy original if no effect
+        shutil.copy(file_path, output_file)
+
     return {
-        "ffmpeg_version": ff_version,
-        "ffprobe_version": fp_version
+        "original_filename": file.filename,
+        "processed_filename": output_file.name,
+        "prompt": prompt,
+        "message": "Audio processed successfully!"
     }
