@@ -1,0 +1,9 @@
+numpy
+scipy
+librosa
+soundfile
+pyrubberband
+pyworld
+pedalboard
+openai
+pydub
