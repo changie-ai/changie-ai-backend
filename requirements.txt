@@ -5,5 +5,5 @@ soundfile
 pyrubberband
 pyworld
 pedalboard
-openai
 pydub
+openai>=1.0.0
