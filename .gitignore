@@ -15,5 +15,8 @@ processed/
 logs/
 .DS_Store
 
+# Ignore GPT4All experiments
+gpt4all_build/
+
 # Env
 .env
