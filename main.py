@@ -1,58 +1,75 @@
-from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import FileResponse
+# main.py
 import os
-import shutil
-import subprocess
-import uuid
+import soundfile as sf
+import librosa
+import json
+import datetime
+from prompt_parser import parse_prompt_to_plan
+from effects_engine import apply_effect_chain
 
-app = FastAPI()
+UPLOADS_DIR = "uploads"
+PROCESSED_DIR = "processed"
+LOGS_DIR = "logs"
 
-UPLOAD_FOLDER = "uploads"
-PROCESSED_FOLDER = "processed"
+MODEL_USED = "gpt-4o-mini"  # for logging purposes
 
-# Ensure folders exist
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(PROCESSED_FOLDER, exist_ok=True)
+def run_interactive():
+    while True:
+        user_prompt = input("\nEnter audio prompt (or 'q' to quit):\n> ")
 
-@app.get("/ping")
-def ping():
-    return {"message": "pong"}
+        if user_prompt.lower() == "q":
+            print("Goodbye!")
+            break
 
-@app.post("/upload")
-async def upload_audio(file: UploadFile = File(...), prompt: str = ""):
-    # Save the uploaded file
-    input_path = os.path.join(UPLOAD_FOLDER, f"{uuid.uuid4()}_{file.filename}")
-    with open(input_path, "wb") as f:
-        shutil.copyfileobj(file.file, f)
+        # Generate unique filename
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        input_file = os.path.join(UPLOADS_DIR, "audiofile.wav")
+        output_file = os.path.join(PROCESSED_DIR, f"audio_processed_{timestamp}.wav")
+        log_file = os.path.join(LOGS_DIR, f"audio_log_{timestamp}.json")
 
-    # Prepare processed file path
-    output_path = os.path.join(PROCESSED_FOLDER, f"processed_{file.filename}")
+        print("🎛️ Applying effect chain...")
 
-    # Apply 1000ms delay using ffmpeg
-    # aevalsrc=0 generates silence if needed; "adelay=1000|1000" adds 1000ms delay to both channels
-    command = [
-        "ffmpeg",
-        "-y",  # overwrite output if exists
-        "-i", input_path,
-        "-af", "adelay=1000|1000",
-        output_path
-    ]
+        # Parse prompt
+        try:
+            plan = parse_prompt_to_plan(user_prompt)
+        except Exception as e:
+            print(f"⚠️ GPT parser error: {e}")
+            plan = []
 
-    try:
-        subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    except subprocess.CalledProcessError as e:
-        return {"error": f"FFmpeg processing failed: {e.stderr.decode()}"}
+        # Load audio
+        try:
+            audio, sr = librosa.load(input_file, sr=None)
+        except Exception as e:
+            print(f"⚠️ Could not load input file {input_file}: {e}")
+            continue
 
-    return {
-        "filename": file.filename,
-        "prompt": prompt,
-        "message": f"File '{file.filename}' uploaded and processed with 1000ms delay!",
-        "download_url": f"/download/{os.path.basename(output_path)}"
-    }
+        # Apply effects
+        try:
+            output = apply_effect_chain(audio, sr, plan)
+            sf.write(output_file, output, sr)
+            print(f"✅ Processing complete! Saved as {output_file}")
+        except Exception as e:
+            print(f"⚠️ Error processing audio: {e}")
+            continue
 
-@app.get("/download/{filename}")
-def download_file(filename: str):
-    file_path = os.path.join(PROCESSED_FOLDER, filename)
-    if os.path.exists(file_path):
-        return FileResponse(file_path, media_type="audio/m4a", filename=filename)
-    return {"error": "File not found"}
+        # Save log
+        try:
+            log_data = {
+                "prompt": user_prompt,
+                "plan": plan,
+                "input_file": input_file,
+                "output_file": output_file,
+                "timestamp": timestamp,
+                "model_used": MODEL_USED
+            }
+            with open(log_file, "w") as f:
+                json.dump(log_data, f, indent=2)
+        except Exception as e:
+            print(f"⚠️ Could not save log: {e}")
+
+if __name__ == "__main__":
+    # Ensure folders exist
+    for d in [UPLOADS_DIR, PROCESSED_DIR, LOGS_DIR]:
+        os.makedirs(d, exist_ok=True)
+
+    run_interactive()

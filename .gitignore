@@ -1,2 +1,19 @@
+# Python
 venv/
-venv/
+__pycache__/
+*.pyc
+
+# Audio / outputs
+uploads/
+outputs/
+processed/
+*.wav
+*.mp3
+*.m4a
+
+# Logs & OS junk
+logs/
+.DS_Store
+
+# Env
+.env

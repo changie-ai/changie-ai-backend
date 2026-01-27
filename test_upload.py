@@ -1,12 +1,11 @@
+# test_upload.py
 import requests
 
-url = "https://changie-ai-backend.onrender.com/upload"
-file_path = "uploads/audiofile.m4a"  # Your test file
-prompt_text = "delay 0.5"  # Adjust seconds if needed
+url = "http://127.0.0.1:8255/upload"
+file_path = "uploads/audiofile.wav"
 
 with open(file_path, "rb") as f:
     files = {"file": f}
-    data = {"prompt": prompt_text}
-    response = requests.post(url, files=files, data=data)
+    response = requests.post(url, files=files)
 
 print(response.json())

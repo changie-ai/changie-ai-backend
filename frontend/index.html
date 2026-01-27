@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChangieAI</title>
+
+<style>
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: #202123;
+  color: #dadce0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  height: 50px;
+  background-color: #343541;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  font-weight: bold;
+  font-size: 18px;
+  border-bottom: 1px solid #444;
+}
+
+.upload-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-box {
+  width: 140px;
+  height: 60px;
+  border: 2px dashed #555;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 11px;
+}
+
+.bottom-capsule {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid #444;
+  background-color: #343541;
+}
+
+.bottom-capsule input {
+  width: 60%;
+  max-width: 700px;
+  padding: 12px 15px;
+  border-radius: 30px;
+  border: none;
+  background-color: #2a2b32;
+  color: #fff;
+  font-size: 14px;
+}
+
+audio {
+  display: none;
+  margin: 10px auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">ChangieAI</div>
+
+<div class="upload-wrapper">
+  <label class="upload-box">
+    <input type="file" id="audio-file" hidden>
+    Upload audio
+  </label>
+</div>
+
+<audio id="player" controls></audio>
+
+<div class="bottom-capsule">
+  <input
+    type="text"
+    id="prompt-input"
+    placeholder="Type your effect instructions and press Enter..."
+  >
+</div>
+
+<!-- ✅ SCRIPT MUST BE LAST -->
+<script>
+let selectedFile = null;
+
+const fileInput = document.getElementById("audio-file");
+const promptInput = document.getElementById("prompt-input");
+const player = document.getElementById("player");
+
+// Capture upload
+fileInput.addEventListener("change", () => {
+  selectedFile = fileInput.files[0];
+  console.log("Selected:", selectedFile?.name);
+});
+
+// Handle Enter
+promptInput.addEventListener("keydown", async (e) => {
+  if (e.key !== "Enter") return;
+
+  if (!selectedFile) {
+    alert("Upload an audio file first.");
+    return;
+  }
+
+  const prompt = promptInput.value.trim();
+  if (!prompt) return;
+
+  const formData = new FormData();
+  formData.append("file", selectedFile);
+  formData.append("prompt", prompt);
+
+  promptInput.value = "Processing…";
+
+  try {
+    const res = await fetch("/process", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!res.ok) throw new Error("Processing failed");
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+
+    player.src = url;
+    player.style.display = "block";
+    player.play();
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "changie_processed.wav";
+    a.click();
+
+    promptInput.value = "";
+
+  } catch (err) {
+    console.error(err);
+    alert("Error processing audio");
+    promptInput.value = "";
+  }
+});
+</script>
+
+</body>
+</html>
