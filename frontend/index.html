@@ -68,12 +68,12 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 22px 0;
+  padding: 26px 0; /* slightly taller pill box */
 }
 
 .bottom-capsule input {
   width: 91%;
-  padding: 16px 52px 16px 15px; /* space for circular button */
+  padding: 18px 52px 18px 15px; /* slightly taller padding */
   border-radius: 30px;
   border: none;
   background-color: #2b2c31; /* pill box slightly lighter than page bg */
@@ -98,8 +98,8 @@ body, html {
 }
 
 .send-button svg {
-  width: 19px; /* 20% smaller than previous */
-  height: 19px;
+  width: 20px;
+  height: 20px;
   stroke: #2b2c31; /* same as pill box bg for arrow */
   stroke-width: 2.5;
   fill: none;
@@ -110,6 +110,15 @@ body, html {
 audio {
   display: none;
   margin: 10px auto;
+}
+.download-link {
+  display: none;
+  color: #d1d5db;
+  font-size: 13px;
+  text-decoration: underline;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 </style>
 </head>
@@ -127,6 +136,7 @@ audio {
 </div>
 
 <audio id="player" controls></audio>
+<div class="download-link" id="download-link"></div>
 
 <div class="bottom-capsule">
   <div class="input-wrapper">
@@ -152,6 +162,7 @@ const fileNameDiv = document.getElementById("file-name");
 const promptInput = document.getElementById("prompt-input");
 const player = document.getElementById("player");
 const sendBtn = document.getElementById("send-btn");
+const downloadLink = document.getElementById("download-link");
 
 // Capture upload
 fileInput.addEventListener("change", () => {
@@ -188,12 +199,16 @@ async function processAudio() {
 
     player.src = url;
     player.style.display = "block";
-    player.play();
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "changie_processed.wav";
-    a.click();
+    // Show download link with proper name
+    downloadLink.style.display = "block";
+    downloadLink.textContent = selectedFile.name.replace(/\.[^/.]+$/, "") + "_processed.wav";
+    downloadLink.onclick = () => {
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = downloadLink.textContent;
+      a.click();
+    };
 
     promptInput.value = "";
 
