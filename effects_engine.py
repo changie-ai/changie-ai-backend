@@ -929,7 +929,7 @@ def apply_effect_chain(orig_audio, sr, chain):
                     mix=0.8
                 )
 
-                audio = normalize_audio(h)
+                audio = h.astype(np.float32)
                 print("[HARMONIZER] SUCCESS")
 
             except Exception as e:
