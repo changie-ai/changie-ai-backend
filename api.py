@@ -39,15 +39,16 @@ async def process_audio(
     file: UploadFile = File(...),
     prompt: str = Form(...)
 ):
-    uid = str(uuid.uuid4())
+    name, _ = os.path.splitext(file.filename)
 
-    input_path = f"{UPLOAD_DIR}/{uid}_{file.filename}"
-    output_path = f"{OUTPUT_DIR}/{uid}_out.wav"
+    input_path = f"{UPLOAD_DIR}/{file.filename}"
+    output_filename = f"{name}_processed.wav"
+    output_path = f"{OUTPUT_DIR}/{output_filename}"
 
     with open(input_path, "wb") as f:
         f.write(await file.read())
 
-    audio, sr = librosa.load(input_path, sr=None, mono=True)
+    audio, sr = librosa.load(input_path, sr=None, mono=False)
 
     chain = parse_prompt_to_plan(prompt)
     try:
@@ -61,4 +62,9 @@ async def process_audio(
 
     sf.write(output_path, processed_int16, sr, subtype="PCM_16")
 
-    return FileResponse(output_path, media_type="audio/wav")
+    return FileResponse(
+        output_path,
+        media_type="audio/wav",
+        filename=output_filename
+    )
+
