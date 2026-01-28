@@ -117,5 +117,7 @@ Return ONLY a JSON array like:
 
         return plan
 
-    except Exception:
-        return []
+    except Exception as e:
+        print("❌ PROMPT PARSER FAILED:", e)
+        print("❌ RAW CONTENT:", content if 'content' in locals() else 'NO CONTENT')
+        raise RuntimeError("Prompt parsing failed")
