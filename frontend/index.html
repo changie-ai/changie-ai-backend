@@ -19,18 +19,17 @@ body, html {
 
 .top-bar {
   height: 50px;
-  background-color: #343541;
   display: flex;
   align-items: center;
   padding: 0 15px;
   font-weight: bold;
   font-size: 18px;
-  border-bottom: 1px solid #444;
 }
 
 .upload-wrapper {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -46,26 +45,66 @@ body, html {
   cursor: pointer;
   color: #aaa;
   font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.upload-filename {
+  font-size: 12px;
+  color: #ccc;
+  text-align: center;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 60%;
+  max-width: 700px;
 }
 
 .bottom-capsule {
-  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid #444;
-  background-color: #343541;
+  padding: 22px 0;
 }
 
 .bottom-capsule input {
-  width: 60%;
-  max-width: 700px;
-  padding: 12px 15px;
+  width: 91%;
+  padding: 16px 52px 16px 15px; /* space for circular button */
   border-radius: 30px;
   border: none;
-  background-color: #2a2b32;
-  color: #fff;
+  background-color: #2b2c31; /* pill box slightly lighter than page bg */
+  color: #d1d5db; /* prompt text lighter grey */
   font-size: 14px;
+  outline: none; /* removes focus highlight */
+}
+
+.send-button {
+  position: absolute;
+  right: 5px; /* flush with right side of pill box */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #d1d5db; /* light grey circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.send-button svg {
+  width: 19px; /* 20% smaller than previous */
+  height: 19px;
+  stroke: #2b2c31; /* same as pill box bg for arrow */
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 audio {
@@ -84,36 +123,44 @@ audio {
     <input type="file" id="audio-file" hidden>
     Upload audio
   </label>
+  <div class="upload-filename" id="file-name"></div>
 </div>
 
 <audio id="player" controls></audio>
 
 <div class="bottom-capsule">
-  <input
-    type="text"
-    id="prompt-input"
-    placeholder="Type your effect instructions and press Enter..."
-  >
+  <div class="input-wrapper">
+    <input
+      type="text"
+      id="prompt-input"
+      placeholder="Type your effect instructions and press Enter..."
+    >
+    <div class="send-button" id="send-btn">
+      <!-- Upward arrow with slightly longer tail -->
+      <svg viewBox="0 0 24 24">
+        <path d="M12 20V5M12 5L5 12M12 5l7 7" />
+      </svg>
+    </div>
+  </div>
 </div>
 
-<!-- ✅ SCRIPT MUST BE LAST -->
 <script>
 let selectedFile = null;
 
 const fileInput = document.getElementById("audio-file");
+const fileNameDiv = document.getElementById("file-name");
 const promptInput = document.getElementById("prompt-input");
 const player = document.getElementById("player");
+const sendBtn = document.getElementById("send-btn");
 
 // Capture upload
 fileInput.addEventListener("change", () => {
   selectedFile = fileInput.files[0];
-  console.log("Selected:", selectedFile?.name);
+  fileNameDiv.textContent = selectedFile ? selectedFile.name : "";
 });
 
-// Handle Enter
-promptInput.addEventListener("keydown", async (e) => {
-  if (e.key !== "Enter") return;
-
+// Function to send request
+async function processAudio() {
   if (!selectedFile) {
     alert("Upload an audio file first.");
     return;
@@ -155,7 +202,15 @@ promptInput.addEventListener("keydown", async (e) => {
     alert("Error processing audio");
     promptInput.value = "";
   }
+}
+
+// Handle Enter
+promptInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") processAudio();
 });
+
+// Handle click on send button
+sendBtn.addEventListener("click", processAudio);
 </script>
 
 </body>
