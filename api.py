@@ -50,12 +50,22 @@ async def process_audio(
 
     audio, sr = librosa.load(input_path, sr=None, mono=False)
 
+    # Force safe mono for DSP
+    if audio.ndim == 2:
+        audio = np.mean(audio, axis=0)
+
     chain = parse_prompt_to_plan(prompt)
     try:
         processed = apply_effect_chain(audio, sr, chain)
     except Exception as e:
         print("❌ EFFECT ENGINE ERROR:", e)
         raise
+   
+    # ✅ ADD THIS BLOCK
+    max_val = np.max(np.abs(processed))
+    if max_val > 0:
+        processed = processed / max_val
+
 
     processed = np.clip(processed, -1.0, 1.0)
     processed_int16 = (processed * 32767).astype(np.int16)
