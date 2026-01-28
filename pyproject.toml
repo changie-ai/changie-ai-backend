@@ -19,6 +19,7 @@ pydub = "^0.25.1"
 matplotlib = "^3.10.7"
 pedalboard = "^0.9.19"
 sounddevice = "^0.5.3"
+openai = "^2.8.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.4.0"
