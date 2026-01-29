@@ -423,7 +423,7 @@ def harmonizer(audio, sr, voices=None, key=None, intervals=None, mix=0.8):
     harmony_stack = np.stack(voices_out, axis=1)
 
     # Mix harmonies
-    harmony_mix = np.mean(harmony_stack, axis=1)
+    harmony_mix = np.sum(harmony_stack, axis=1) / np.sqrt(harmony_stack.shape[1])
 
     # Match original mono length
     mono = mono[:min_len]
