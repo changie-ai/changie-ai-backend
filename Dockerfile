@@ -1,5 +1,5 @@
-# Use stable Python for audio DSP
-FROM python:3.10-slim
+# Use the same Python as your Mac (3.13)
+FROM python:3.13-slim
 
 # Install system-level audio dependencies
 RUN apt-get update && apt-get install -y \
@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     libsndfile1 \
     sox \
     git \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -16,13 +17,13 @@ WORKDIR /app
 # Copy dependency files first (for caching)
 COPY pyproject.toml poetry.lock* /app/
 
-# Install poetry
+# Install Poetry
 RUN pip install --no-cache-dir poetry
 
-# Configure poetry to install into system env
+# Configure Poetry to install into system env
 RUN poetry config virtualenvs.create false
 
-# Install Python deps
+# Install Python dependencies
 RUN poetry install --no-interaction --no-ansi
 
 # Copy the rest of the app
