@@ -1,26 +1,35 @@
-# 1. Use a Python image
-FROM python:3.13-slim
+# Use stable Python for audio DSP
+FROM python:3.10-slim
 
-# 2. Install system dependencies
+# Install system-level audio dependencies
 RUN apt-get update && apt-get install -y \
-    rubberband-cli \
     ffmpeg \
-    build-essential \
+    rubberband-cli \
+    libsndfile1 \
+    sox \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
-# 3. Set work directory
+# Set working directory
 WORKDIR /app
 
-# 4. Copy project files
-COPY . .
+# Copy dependency files first (for caching)
+COPY pyproject.toml poetry.lock* /app/
 
-# 5. Install Python dependencies with Poetry
-RUN pip install --upgrade pip
-RUN pip install poetry
-RUN poetry install --no-root
+# Install poetry
+RUN pip install --no-cache-dir poetry
 
-# 6. Expose port for FastAPI
+# Configure poetry to install into system env
+RUN poetry config virtualenvs.create false
+
+# Install Python deps
+RUN poetry install --no-interaction --no-ansi
+
+# Copy the rest of the app
+COPY . /app
+
+# Expose Render port
 EXPOSE 8000
 
-# 7. Run the app
-CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start FastAPI
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
