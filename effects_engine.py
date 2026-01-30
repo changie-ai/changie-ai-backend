@@ -807,6 +807,9 @@ def apply_effect_chain(orig_audio, sr, chain):
     sr: sample rate
     chain: list-of-steps OR a raw prompt string
     """
+ 
+    print("🔥 APPLY_EFFECT_CHAIN ENTERED 🔥")
+
     if orig_audio is None:
         return orig_audio
 
