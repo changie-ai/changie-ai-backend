@@ -14,6 +14,10 @@ from prompt_parser import parse_prompt_to_plan
 
 app = FastAPI()
 
+@app.get("/")
+def root():
+    return {"status": "ChangieAI API is alive!"}
+
 UPLOAD_DIR = "uploads"
 OUTPUT_DIR = "outputs"
 FRONTEND_DIR = "frontend"
