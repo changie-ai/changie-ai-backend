@@ -1,4 +1,31 @@
+# Python
+venv/
+__pycache__/
+*.pyc
 
+# Runtime data
+uploads/
+outputs/
+processed/
+logs/
+
+# Audio
+*.wav
+*.mp3
+*.m4a
+
+# Builds
+gpt4all_build/
+
+# Tests / experiments
+test_*.py
+local_main.py
+convert_m4a_to_wav.py
+_pyllmodel_backup.py
+revChat.py
+
+# OS
+.DS_Store
 
 
 # OS junk
