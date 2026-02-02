@@ -1,22 +1,36 @@
+
+
+
+# OS junk
+.DS_Store
+
 # Python
-venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
 
-# Audio / outputs
-uploads/
-outputs/
-processed/
+# Poetry
+.poetry/
+
+# Env / secrets
+.env
+
+# Audio & media
 *.wav
 *.mp3
 *.m4a
+*.aiff
+*.flac
 
-# Logs & OS junk
+# Runtime folders
+uploads/
+outputs/
+processed/
 logs/
-.DS_Store
 
-# Ignore GPT4All experiments
-gpt4all_build/
-
-# Env
-.env
+# IDE
+.vscode/
+.idea/
