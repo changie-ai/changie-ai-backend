@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y \
     libsndfile1 \
     sox \
     git \
+    build-essential \
+    libfftw3-dev \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory

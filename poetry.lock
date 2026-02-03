@@ -1890,6 +1890,34 @@ files = [
 dev = ["atomicwrites (==1.2.1)", "attrs (==19.2.0)", "coverage (==6.5.0)", "hatch", "invoke (==1.7.3)", "more-itertools (==4.3.0)", "pbr (==4.3.0)", "pluggy (==1.0.0)", "py (==1.11.0)", "pytest (==7.2.0)", "pytest-cov (==4.0.0)", "pytest-timeout (==2.1.0)", "pyyaml (==5.1)"]
 
 [[package]]
+name = "pyworld"
+version = "0.3.5"
+description = "PyWorld: a Python wrapper for WORLD vocoder"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "pyworld-0.3.5-cp310-cp310-win_amd64.whl", hash = "sha256:829876828de51c7f5fdd06efa0283d69f9897b592e034db9ded857e378bf625c"},
+    {file = "pyworld-0.3.5-cp311-cp311-win_amd64.whl", hash = "sha256:538a359862f4bcfa7a58c019644f78941c94dc66a654be8567054ee9c1fc8f1b"},
+    {file = "pyworld-0.3.5-cp312-cp312-win_amd64.whl", hash = "sha256:59b48961c2ac34fb01efeb1a77d3eda69c41b676858cbc3a82dfb7602c0c762b"},
+    {file = "pyworld-0.3.5-cp313-cp313-win_amd64.whl", hash = "sha256:860c5c3528f1dbc5c68fa71a16e3bb6990244619e5b9baf62952f3a6bfc6131c"},
+    {file = "pyworld-0.3.5-cp36-cp36m-win32.whl", hash = "sha256:7e96564f93b0a467f980cff385807facc4552b49e0dc6bd79a75480279d0c271"},
+    {file = "pyworld-0.3.5-cp36-cp36m-win_amd64.whl", hash = "sha256:ae801577269c000c3f8876b7fdc928c1e15c5388f81c83218cc5c5b59cef05d7"},
+    {file = "pyworld-0.3.5-cp37-cp37m-win32.whl", hash = "sha256:306bc4397a3863686f261391e544c87cfd0c36f5151cf770d70e6459efb1310e"},
+    {file = "pyworld-0.3.5-cp37-cp37m-win_amd64.whl", hash = "sha256:cca7c6ad175b48665cd777183d72ab25c1372ec8b827af4748596ca43e7ed21d"},
+    {file = "pyworld-0.3.5-cp38-cp38-win_amd64.whl", hash = "sha256:2cf35c0d4a13aff30287c49f8db6cefea6777402f558dd831502cd22949e570a"},
+    {file = "pyworld-0.3.5-cp39-cp39-win_amd64.whl", hash = "sha256:3fb2b64482b569301ba333d7fb5bcf79ff99ed65b9768106d518eb9b3545bedb"},
+    {file = "pyworld-0.3.5.tar.gz", hash = "sha256:1b93e53cddb67a0e4faa34d6cf919ac6c662feb1c8c0ed901d71b595ab396aa3"},
+]
+
+[package.dependencies]
+numpy = "*"
+
+[package.extras]
+sdist = ["cython (>=0.24)", "numpy"]
+test = ["nose"]
+
+[[package]]
 name = "requests"
 version = "2.32.5"
 description = "Python HTTP for Humans."
@@ -2318,4 +2346,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.5.0)
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "fc6050b0f0e1ba7d8f43344562f0068299356b7b14da0bf2d85ae71dfe1e7eb5"
+content-hash = "89525ff4f6b11ffefc607ffdfbb020764959c76eb7851e18217d3b35e9fbc9de"
