@@ -1,5 +1,5 @@
 # 1️⃣ Use the same Python version as your Mac
-FROM python:3.13-slim
+FROM python:3.11-slim
 
 # 2️⃣ Install system audio tools and build dependencies
 RUN apt-get update && apt-get install -y \
