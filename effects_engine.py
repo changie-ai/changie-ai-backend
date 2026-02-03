@@ -811,10 +811,21 @@ def apply_effect_chain(orig_audio, sr, chain):
     import shutil, sys, time
 
     print("🔥 APPLY_EFFECT_CHAIN ENTERED 🔥", flush=True)
-    print("AUTOTUNE CHECK — rubberband path:", shutil.which("rubberband"), flush=True)
+
+    # Check Rubber Band (used for time/pitch stretch)
+    print("RUBBERBAND CHECK — path:", shutil.which("rubberband"), flush=True)
+
+    # Check pyWORLD (used for autotune / formant / harmony)
+    try:
+        import pyworld
+        print("PYWORLD CHECK — version:", pyworld.__version__, flush=True)
+    except Exception as e:
+        print("PYWORLD CHECK — FAILED:", repr(e), flush=True)
+
     sys.stdout.flush()
     time.sleep(0.2)
-    
+
+
     if orig_audio is None:
         return orig_audio
 
