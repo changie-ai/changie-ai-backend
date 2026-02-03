@@ -22,7 +22,7 @@ COPY pyproject.toml poetry.lock* /app/
 
 # 5️⃣ Install pip and Poetry (safe version)
 RUN python3 -m pip install --upgrade pip setuptools wheel
-RUN pip install poetry==1.8.6
+RUN pip install poetry
 
 # 6️⃣ Tell Poetry to install directly into system Python (no virtualenv)
 RUN poetry config virtualenvs.create false
