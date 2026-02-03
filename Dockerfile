@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libfftw3-dev \
     python3-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -19,8 +20,9 @@ WORKDIR /app
 # Copy dependency files first (for caching)
 COPY pyproject.toml poetry.lock* /app/
 
-# Install poetry
-RUN pip install --no-cache-dir poetry
+# Install Poetry via official install script (works reliably)
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH="/root/.local/bin:$PATH"
 
 # Configure poetry to install into system env
 RUN poetry config virtualenvs.create false
