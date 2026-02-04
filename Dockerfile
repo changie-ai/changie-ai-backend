@@ -14,8 +14,12 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --upgrade pip \
- && pip install --no-cache-dir --default-timeout=100 -r requirements.txt
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install \
+      --no-cache-dir \
+      --prefer-binary \
+      --index-url https://pypi.org/simple \
+      -r requirements.txt
 
 COPY . .
 
