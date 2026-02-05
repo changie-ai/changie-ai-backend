@@ -1,26 +1,18 @@
+# Use Python 3.10 slim
 FROM python:3.10-slim
 
-# System deps for audio / autotune
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    rubberband-cli \
-    libsndfile1 \
-    sox \
-    build-essential \
-    libfftw3-dev \
-    && rm -rf /var/lib/apt/lists/*
-
+# Set working directory
 WORKDIR /app
 
-COPY requirements.txt .
+# Copy everything
+COPY . /app
 
-RUN pip install --upgrade pip setuptools wheel && \
-    pip install \
-      --no-cache-dir \
-      --prefer-binary \
-      --index-url https://pypi.org/simple \
-      -r requirements.txt
+# Upgrade pip and install all requirements for Fly
+RUN pip install --upgrade pip
+RUN pip install -r requirements-fly.txt
 
-COPY . .
+# Expose port for FastAPI / uvicorn
+EXPOSE 8080
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Run your main entrypoint
+CMD ["python", "local_main.py"]
