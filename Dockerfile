@@ -6,9 +6,15 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 ENV PIP_NO_CACHE_DIR=1
 ENV PIP_DEFAULT_TIMEOUT=120
 
+# ---- REQUIRED FOR pyworld (C++ extension) ----
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+# ---------------------------------------------
+
 COPY requirements-fly.txt /app/requirements-fly.txt
 
-# DO NOT upgrade pip or setuptools on Fly
 RUN pip install \
     --retries 15 \
     --timeout 120 \
