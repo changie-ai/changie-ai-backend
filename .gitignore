@@ -61,3 +61,7 @@ logs/
 # IDE
 .vscode/
 .idea/
+
+# Wheels (never commit)
+wheels/
+*.whl
