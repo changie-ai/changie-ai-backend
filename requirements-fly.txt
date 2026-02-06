@@ -1,7 +1,7 @@
 pip>=23.3
 setuptools>=68
 wheel
-fastapi==0.110.0
+fastapi>=0.109,<0.112
 uvicorn
 python-multipart
 
