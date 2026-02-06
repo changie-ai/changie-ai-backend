@@ -1,4 +1,7 @@
-fastapi
+pip>=23.3
+setuptools>=68
+wheel
+fastapi==0.110.0
 uvicorn
 python-multipart
 
