@@ -21,8 +21,14 @@ ENV PIP_TRUSTED_HOST=pypi.org
 
 COPY requirements-fly.txt /app/requirements-fly.txt
 
-RUN pip install --upgrade pip setuptools wheel && \
-    pip install --prefer-binary -r requirements-fly.txt
+RUN pip install \
+    --retries 40 \
+    --timeout 300 \
+    --index-url https://pypi.org/simple \
+    --trusted-host pypi.org \
+    --trusted-host files.pythonhosted.org \
+    --prefer-binary \
+    -r requirements-fly.txt
 
 COPY . /app
 
