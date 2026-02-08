@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# ---- system deps ----
+# ---- system audio deps ----
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     build-essential \
@@ -11,24 +11,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rubberband-cli \
     libsndfile1 \
     sox \
-    git \
     && rm -rf /var/lib/apt/lists/*
-# --------------------
+# ---------------------------
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 ENV PIP_NO_CACHE_DIR=1
 
-# install poetry
-RUN pip install --no-cache-dir poetry
+COPY requirements-fly.txt .
 
-# copy lockfiles FIRST (important for Docker caching)
-COPY pyproject.toml poetry.lock* /app/
+RUN pip install --no-cache-dir -r requirements-fly.txt
 
-# install deps EXACTLY as locked
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-root --no-interaction --no-ansi
-
-# now copy the rest of the app
-COPY . /app
+COPY . .
 
 CMD ["python", "main.py"]
