@@ -19,6 +19,8 @@ ENV PIP_NO_CACHE_DIR=1
 
 COPY requirements-fly.txt .
 
+RUN python -m pip install --upgrade pip setuptools wheel
+
 RUN pip install --no-cache-dir -r requirements-fly.txt
 
 COPY . .
