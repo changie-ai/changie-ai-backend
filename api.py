@@ -8,6 +8,8 @@ import uuid
 import os
 import soundfile as sf
 import numpy as np
+import pyworld
+print("✅ PYWORLD LOADED:", pyworld.__version__)
 
 from effects_engine import apply_effect_chain
 from prompt_parser import parse_prompt_to_plan
