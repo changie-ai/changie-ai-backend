@@ -1,5 +1,6 @@
-fastapi
-uvicorn
+fastapi==0.110.0
+uvicorn==0.29.0
+python-multipart==0.0.9
 openai
 numpy
 scipy
@@ -9,4 +10,3 @@ pydub
 pedalboard
 pyrubberband
 requests
-python-multipart

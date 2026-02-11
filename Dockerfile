@@ -20,7 +20,7 @@ RUN python -m pip install --upgrade pip setuptools wheel
 COPY requirements-fly.txt .
 
 # Install Python deps
-RUN pip install --no-cache-dir -r requirements-fly.txt
+RUN pip install --no-cache-dir --retries 10 --timeout 60 -r requirements-fly.txt
 
 # Copy the app
 COPY . .
