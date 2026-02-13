@@ -82,6 +82,7 @@ Expect rough edges. Things may change.
 
 ## What’s next
 
+- more effects :)
 - Better audio quality
 - More expressive prompt control
 - Easier setup
