@@ -26,8 +26,7 @@ much time and effort this process usually takes.
 
 So I thought, "What if there was an easier way?
 I wanted a super simple way to just tell a prompt what you wanted.  And so was born ChangieAI :)
-
-My intention for this project was for anyone in the world (not just musicians and producers) 
+My intention for this project is for anyone in the world (not just musicians and producers) 
 to be able to describe what they want to happen to thier recorded voice or instrument; then press a button, 
 and let the app create the enhanced version . . . currently 18+ effects to do this with!
 
