@@ -98,6 +98,8 @@ If this idea interests you:
 - Share ideas, feedback, or experiments
 
 Building and experimentation are encouraged.
+Donations Welcome :)
+http://cash.app/$MSargis
 
 ---
 
