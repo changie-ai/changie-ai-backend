@@ -15,6 +15,18 @@ You provide:
 - a prompt describing the desired sound or effect
 
 The system processes the audio and outputs a transformed version.
+I built this from scratch not knowing anything about code starting in Fall 2025.  I am a 
+multi-instrumentalist musician producer that just had an idea one day when I was
+recording one of my songs.  I just wanted to quickly pitch correct and normalize the tempo
+an iphone audio recording I had done.  After diving into all the various ways to effect
+the audio in ableton, logic, changing plug-in variables etc...I was overwhelmed with how
+much time and effort it takes to get it right.  So I thought, "What if there was an easier way?
+I wanted super simple way to just tell a prompt what you wanted.  And so was born ChangieAI :)
+
+I am super proud of this project and would love feedback!  Donations welcome, and if you find it interesting
+enough to collab with me or help me, I would be so happy to talk / meet with you.
+Right now, a simple basic verion for v1, but have plans to build v2 with many more options.
+Thank you in advance for supporting grass roots projects like this :)
 
 ---
 
