@@ -20,7 +20,7 @@ multi-instrumentalist musician producer that just had an idea one day when I was
 recording one of my songs.  I just wanted to quickly pitch correct and normalize the tempo
 an iphone audio recording I had done.  After diving into all the various ways to effect
 the audio in ableton, logic, changing plug-in variables etc...I was overwhelmed with how
-much time and effort it takes to get it right.  So I thought, "What if there was an easier way?
+much time and effort it took to get it right.  So I thought, "What if there was an easier way?
 I wanted super simple way to just tell a prompt what you wanted.  And so was born ChangieAI :)
 
 I am super proud of this project and would love feedback!  Donations welcome, and if you find it interesting
