@@ -20,12 +20,16 @@ The system processes the audio and outputs a transformed version.
 I built this from scratch not knowing anything about code starting in Fall 2025.  I am a 
 multi-instrumentalist musician producer that just had an idea one day when I was
 recording one of my songs.  I just wanted to quickly pitch correct and normalize the tempo
-an iphone audio recording I had done.  After diving into all the various ways to effect
+on an iphone recording I had done.  After diving into all the various ways to effect
 the audio in ableton, logic, changing plug-in variables etc...I was overwhelmed with how
 much time and effort it took to get it right.  So I thought, "What if there was an easier way?
 I wanted a super simple way to just tell a prompt what you wanted.  And so was born ChangieAI :)
 
-I am super proud of this project and would love feedback!  Donations welcome! If you find it interesting, I would be happy to meet!
+My intention for this project was for anyone in the world (not just musicians and producers) 
+to be able to describe what they want to happen to thier recorded voice or instrument; then press a button, 
+and let the app create the enhanced version . . . currently 18+ effects to do this with!
+
+I am super proud of this project and would love feedback!  Donations welcome as well (see link below)!  If you find it interesting, I would be happy to meet!
 Right now, a simple basic verion for v1, but have plans to build v2 with many more options.
 Thank you in advance for supporting grass roots projects like this :)
 
