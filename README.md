@@ -11,7 +11,7 @@ Instead of building complex plugin chains, you describe the sound you want — t
 This project explores a new way to work with audio using text prompts.
 
 You provide:
-- an audio file
+- a recording or audio file
 - a prompt describing the desired sound or effect
 
 The system processes the audio and outputs a transformed version.
