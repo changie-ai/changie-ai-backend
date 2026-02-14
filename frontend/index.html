@@ -247,7 +247,7 @@ audio {
 .retro-text {
   font-family: 'Press Start 2P', monospace;
   color: #39ff14; /* retro green */
-  font-size: 6px;  /* increased from 8px */
+  font-size: 8px;  /* increased from 8px */
   line-height: 1.6; /* slightly more spacing vertically */
   text-shadow: none; /* remove glow */
 }
@@ -261,21 +261,136 @@ audio {
 
 .background-columns {
   position: absolute;
-  top: 300px;   /* move up/down here */
+  top: 200px;   /* move up/down here */
   width: 100%;
 }
 
 .left-column {
   position: absolute;
-  left: 5%;   /* move left/right independently */
+  left: 52%;   /* move left/right independently */
   width: 300px;
   text-align: right;
 }
 
 .right-column {
+
   position: absolute;
-  right: 8%;  /* move left/right independently */
+  right: 5%;  /* move left/right independently */
   width: 300px;
+}
+
+@media (max-width: 768px) {
+
+  /* Allow scrolling (your desktop locks height) */
+  html, body {
+    height: auto !important;
+    overflow-y: auto !important;
+  }
+
+  body {
+    display: block !important;
+  }
+
+  /* Stack everything vertically */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 200px;
+    padding-bottom: 140px;
+    gap: 100px;
+  }
+
+  /* Remove desktop absolute positioning */
+  .background-columns,
+  .upload-wrapper,
+  .left-column,
+  .right-column {
+    position: static !important;
+    transform: none !important;
+  }
+  .upload-box {
+    width: 160px;
+    height: 70px;
+    font-size: 13px;
+  }
+
+  .record-button {
+    width: 160px;
+    height: 60px;
+    font-size: 13px;
+  }
+
+  /* Columns stack vertically */
+  .background-columns {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 40px;
+  }
+
+  .left-column {
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  
+  .right-column {
+    width: 90%;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 9px;
+    line-height: 1.6;
+  }
+
+  /* Keep header fixed (your 5px adjustment preserved) */
+  .top-bar {
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    z-index: 1000;
+  }
+
+  /* Keep icons fixed */
+  .github-button {
+    position: fixed;
+    top: 20px;
+    right: 70px;
+  }
+
+  .cashapp-button {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+  }
+
+  /* Capsule fixed */
+  .bottom-capsule {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+  #prompt-input::placeholder {
+    font-size: 13px;
+  }
+  /* Slight refresh adjustment */
+  #next-btn {
+    margin-left: 2px !important;
+    display: flex !important;
+    z-index: 1001;
+  }
+  
+  .left-column::after {
+    content: "";
+    display: block;
+    width: 60%;
+    height: 1px;
+    background: #39ff14;
+    margin: 40px auto 0 auto;
+  }
 }
 
 </style>
@@ -290,62 +405,67 @@ audio {
   </div>
 </div>
 
-<div class="background-columns">
+<!-- MAIN STACK WRAPPER (for mobile only) -->
+<div class="main-content">
 
-  <div class="left-column retro-text">
-    <div>EFFECT LIST...</div><br><br>
-    <div>autotune</div><br>
-    <div>pitch shift</div><br>
-    <div>key change</div><br>
-    <div>harmonizer</div><br>
-    <div>formant shift</div><br>
-    <div>chorus</div><br>
-    <div>delay</div><br>
-    <div>reverb</div><br>
-    <div>distortion</div><br>
-    <div>bit crush</div><br>
-    <div>compressor</div><br>
-    <div>noise gate</div><br>
-    <div>high pass</div><br>
-    <div>low pass</div><br>
-    <div>slow down</div><br>
-    <div>speed up</div><br>
-    <div>reverse</div>
+  <div class="upload-wrapper">
+    <label class="upload-box">
+      <input type="file" id="audio-file" hidden>
+      Upload audio
+    </label>
+    <div class="upload-filename" id="file-name"></div>
+
+    <button class="record-button" id="record-btn">
+      Record Audio
+    </button>
   </div>
 
-  <div class="right-column retro-text">
-    PROMPT EXAMPLES...<br><br>
-    autotune this as hard as possible, robotic t-pain style, snap every note instantly with no pitch drift<br><br>
-    pitch the entire voice up 3 octaves so it sounds like an insane chipmunk<br><br>
-    make it sound like a monster deep voice<br><br>
-    3 part harmony in the key of c<br><br>
-    stack many slightly detuned voices around the original so it sounds wide and swirly<br><br>
-    ping pong delay repeating that keeps bouncing and fading for a long time<br><br>
-    massive cathedral reverb, long decay, completely washed out<br><br>
-    cut the lows aggressively so only sharp highs remain<br><br>
-    remove all highs so it sounds muffled and underwater<br><br>
-    destroy the voice with heavy distortion like a blown-out megaphone<br><br>
-    reverse the entire audio with a big hall reverb<br><br>
-    slow down by 50 percent while keeping the pitch the same
+  <div class="background-columns">
+
+    <div class="left-column retro-text">
+      <div>EFFECT LIST...</div><br><br>
+      <div>autotune</div><br>
+      <div>pitch shift</div><br>
+      <div>key change</div><br>
+      <div>harmonizer</div><br>
+      <div>formant shift</div><br>
+      <div>chorus</div><br>
+      <div>delay</div><br>
+      <div>reverb</div><br>
+      <div>distortion</div><br>
+      <div>bit crush</div><br>
+      <div>compressor</div><br>
+      <div>noise gate</div><br>
+      <div>high pass</div><br>
+      <div>low pass</div><br>
+      <div>slow down</div><br>
+      <div>speed up</div><br>
+      <div>reverse</div>
+    </div>
+
+    <div class="right-column retro-text">
+      PROMPT EXAMPLES...<br><br>
+      autotune this as hard as possible, robotic t-pain style, snap every note instantly with no pitch drift<br><br>
+      pitch the entire voice up 3 octaves so it sounds like an insane chipmunk<br><br>
+      make it sound like a monster deep voice<br><br>
+      3 part harmony in the key of c<br><br>
+      stack many slightly detuned voices around the original so it sounds wide and swirly<br><br>
+      ping pong delay repeating that keeps bouncing and fading for a long time<br><br>
+      massive cathedral reverb, long decay, completely washed out<br><br>
+      cut the lows aggressively so only sharp highs remain<br><br>
+      remove all highs so it sounds muffled and underwater<br><br>
+      destroy the voice with heavy distortion like a blown-out megaphone<br><br>
+      reverse the entire audio with a big hall reverb<br><br>
+      slow down by 50 percent while keeping the pitch the same
+    </div>
+
   </div>
 
-</div>
-
-<div class="upload-wrapper">
-  <label class="upload-box">
-    <input type="file" id="audio-file" hidden>
-    Upload audio
-  </label>
-  <div class="upload-filename" id="file-name"></div>
-
-  <button class="record-button" id="record-btn">
-    Record Audio
-  </button>
+  <audio id="player" controls></audio>
+  <div class="download-link" id="download-link"></div>
 
 </div>
-
-<audio id="player" controls></audio>
-<div class="download-link" id="download-link"></div>
+<!-- END MAIN STACK WRAPPER -->
 
 <div class="bottom-capsule">
   <div class="input-wrapper">
@@ -354,8 +474,6 @@ audio {
       id="prompt-input"
       placeholder="Changie your audio here (singular or multiple effects)...shorter clips process faster..."
     >
-
-    <!-- Process button inside capsule -->
     <div class="send-button" id="send-btn">
       <svg viewBox="0 0 24 24">
         <path d="M12 20V5M12 5L5 12M12 5l7 7" />
@@ -363,14 +481,13 @@ audio {
     </div>
   </div>
 
-  <!-- Refresh/next prompt button outside capsule, aligned right -->
   <div id="next-btn" style="
     margin-left: 12px;
     width: 36px;
     height: 36px;
     border-radius: 50%;
     border: none;
-    background-color: #111;  /* dark circle */
+    background-color: #111;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -520,6 +637,12 @@ const nextBtn = document.getElementById("next-btn");
 nextBtn.addEventListener("click", () => {
   location.reload();
 });
+
+if (window.innerWidth <= 768) {
+  const input = document.getElementById("prompt-input");
+  input.placeholder = "Changie your audio here...";
+}
+
 
 </script>
 <a href="https://github.com/changie-ai"
