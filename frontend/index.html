@@ -13,10 +13,7 @@ body, html {
   font-family: Helvetica, Arial, sans-serif;
   background-color: #202123;
   color: #dadce0;
-  height: 100vh;
-  overflow: hidden;  /* prevent horizontal scrollbar */
-  display: flex;
-  flex-direction: column;
+  overflow-x: hidden;
 }
 
 .top-bar {
@@ -25,7 +22,7 @@ body, html {
   align-items: center;
   padding: 0 20px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .github-button {
@@ -262,32 +259,35 @@ audio {
 .background-columns {
   position: absolute;
   top: 200px;   /* move up/down here */
-  width: 100%;
+  width: 900px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .left-column {
   position: absolute;
-  left: 52%;   /* move left/right independently */
+  left: 80%;   /* move left/right independently */
   width: 300px;
   text-align: right;
 }
 
 .right-column {
-
+  color: #C0C0C0; 
   position: absolute;
-  right: 5%;  /* move left/right independently */
+  right: -50%;  /* move left/right independently */
   width: 300px;
 }
 
 @media (max-width: 768px) {
 
-  /* Allow scrolling (your desktop locks height) */
-  html, body {
-    height: auto !important;
-    overflow-y: auto !important;
+  html {
+   height: auto !important;
   }
 
   body {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: auto !important;
     display: block !important;
   }
 
@@ -365,13 +365,14 @@ audio {
     top: 20px;
     right: 25px;
   }
-
+ 
   /* Capsule fixed */
   .bottom-capsule {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
+    z-index: 1000;
   }
   #prompt-input::placeholder {
     font-size: 13px;
@@ -391,9 +392,37 @@ audio {
     background: #39ff14;
     margin: 40px auto 0 auto;
   }
-}
+  audio[controls] {
+    position: fixed;
+    bottom: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    z-index: 998;
+    background: #2b2c31;
+    border-radius: 8px;
+    padding: 6px;
+  }
+  .download-link {
+    position: fixed;
+    bottom: 75px;   /* right under player */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 998;
+  }
 
+  @keyframes capsuleGlow {
+    0%   { box-shadow: 0 0 0px #39ff14; }
+    50%  { box-shadow: 0 0 20px #39ff14; }
+    100% { box-shadow: 0 0 0px #39ff14; }
+  }
+
+  .bottom-capsule.processing {
+    animation: capsuleGlow 1.2s infinite ease-in-out;
+  }
+}
 </style>
+
 </head>
 
 <body>
@@ -528,12 +557,16 @@ function startProcessingAnimation() {
     dots = dots.length < 3 ? dots + "." : "";
     promptInput.value = originalPromptText + " - processing " + dots;
   }, 500);
+  if (window.innerWidth <= 768) {
+    document.querySelector(".bottom-capsule").classList.add("processing");
+  }
 }
 
 function stopProcessingAnimation() {
   clearInterval(processingInterval);
   promptInput.value = originalPromptText;
   promptInput.disabled = false;
+  document.querySelector(".bottom-capsule").classList.remove("processing");
 }
 
 recordBtn.addEventListener("click", async () => {
