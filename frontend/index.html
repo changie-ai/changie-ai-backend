@@ -408,7 +408,7 @@ audio {
     bottom: 75px;   /* right under player */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 998;
+    z-index: 1003;
   }
 
   @keyframes capsuleGlow {
@@ -417,7 +417,7 @@ audio {
     100% { box-shadow: 0 0 0px #39ff14; }
   }
 
-  .bottom-capsule.processing {
+  .input-wrapper.processing {
     animation: capsuleGlow 1.2s infinite ease-in-out;
   }
 }
@@ -558,7 +558,7 @@ function startProcessingAnimation() {
     promptInput.value = originalPromptText + " - processing " + dots;
   }, 500);
   if (window.innerWidth <= 768) {
-    document.querySelector(".bottom-capsule").classList.add("processing");
+    document.querySelector(".input-wrapper").classList.add("processing");
   }
 }
 
@@ -566,7 +566,7 @@ function stopProcessingAnimation() {
   clearInterval(processingInterval);
   promptInput.value = originalPromptText;
   promptInput.disabled = false;
-  document.querySelector(".bottom-capsule").classList.remove("processing");
+  document.querySelector(".input-wrapper").classList.remove("processing");
 }
 
 recordBtn.addEventListener("click", async () => {
