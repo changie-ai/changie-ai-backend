@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ChangieAI</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
@@ -277,6 +279,15 @@ audio {
   right: -50%;  /* move left/right independently */
   width: 300px;
 }
+@keyframes inputGlow {
+  0%   { background-color: #2b2c31; }
+  50%  { background-color: rgba(240, 128, 128, 0.18); }
+  100% { background-color: #2b2c31; }
+}
+
+.bottom-capsule input.processing {
+  animation: inputGlow 1.2s infinite ease-in-out;
+}
 
 @media (max-width: 768px) {
 
@@ -409,16 +420,6 @@ audio {
     left: 50%;
     transform: translateX(-50%);
     z-index: 1003;
-  }
-
-  @keyframes capsuleGlow {
-    0%   { box-shadow: 0 0 0px #39ff14; }
-    50%  { box-shadow: 0 0 20px #39ff14; }
-    100% { box-shadow: 0 0 0px #39ff14; }
-  }
-
-  .input-wrapper.processing {
-    animation: capsuleGlow 1.2s infinite ease-in-out;
   }
 }
 </style>
@@ -557,16 +558,16 @@ function startProcessingAnimation() {
     dots = dots.length < 3 ? dots + "." : "";
     promptInput.value = originalPromptText + " - processing " + dots;
   }, 500);
-  if (window.innerWidth <= 768) {
-    document.querySelector(".input-wrapper").classList.add("processing");
-  }
+
+  promptInput.classList.add("processing");
 }
 
 function stopProcessingAnimation() {
   clearInterval(processingInterval);
   promptInput.value = originalPromptText;
   promptInput.disabled = false;
-  document.querySelector(".input-wrapper").classList.remove("processing");
+  
+  promptInput.classList.remove("processing");
 }
 
 recordBtn.addEventListener("click", async () => {
