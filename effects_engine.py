@@ -702,6 +702,12 @@ def interpret_prompt_to_chain(prompt):
     if "reverb" in p or "cathedral" in p:
         chain.append({"effect":"sick_verb","params":{"room_size":0.98,"mix":0.9}})
     
+    # ---------- GLITCH / STUTTER ----------
+    if "glitch" in p or "stutter" in p or "beat repeat" in p or "chop" in p or "scramble" in p:
+        chaos = 0.8 if ("heavy" in p or "max" in p or "extreme" in p or "destroy" in p) else 0.5
+        density = 4.0 if ("fast" in p or "sixteenth" in p) else 2.0
+        chain.append({"effect":"glitch","params":{"chaos":chaos,"density":density,"mix":0.85}})
+
     # ------- DISTORTION --------
     if ("distort" in p or "overdrive" in p or "saturat" in p or 
         "megaphone" in p or "blown" in p or "destroy" in p or "gritty" in p
@@ -1145,6 +1151,19 @@ def apply_effect_chain(orig_audio, sr, chain):
                     audio = a.astype(np.float32)
             except Exception as e:
                 warnings.warn(f"noise_gate failed: {e}")
+
+        # GLITCH MACHINE (aa_fx)
+        elif eff in ("glitch","glitch_machine","aa_fx","stutter","beat_glitch"):
+            flush()
+            chaos = float(params.get("chaos", params.get("amount", 0.5)))
+            density = float(params.get("density", 2.0))
+            mixv = float(params.get("mix", 0.85))
+            seed = params.get("seed", None)
+            try:
+                from effects.aa_fx import process_aa_fx
+                audio = process_aa_fx(audio, sr, chaos=chaos, density=density, mix=mixv, seed=seed)
+            except Exception as e:
+                warnings.warn(f"glitch machine failed: {e}")
 
         # Unknown effect: ignore silently
         else:
