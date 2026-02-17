@@ -66,6 +66,10 @@ Allowed effects list:
 - wobble
 - vibrato
 - tremolo
+- glitch
+- glitch_machine
+- stutter
+- beat_glitch
 
 Return ONLY a JSON array like:
 
